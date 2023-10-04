@@ -12,6 +12,7 @@ const verifyJwt = require('./verifyJwt');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./models/User');
+const Profile = require('./models/Profile');
 
 const jwtSecret = 'secret';
 
@@ -20,6 +21,7 @@ app.get('/', (req, res)=>{
 });
 
 app.get('/check', verifyJwt, (req, res)=>{
+    console.log(req.user);
     res.send('auth route');
 });
 
@@ -35,8 +37,8 @@ app.post('/login', async(req, res)=>{
             throw new Error('Incorrect password');
         }
 
-        const authToken = jwt.sign({user_id: user._id.toString(), email: user.email}, jwtSecret);
-        res.send({user_id: user._id.toString(), auth_token: authToken});
+        const auth_token = jwt.sign({user_id: user._id.toString(), email: user.email}, jwtSecret);
+        res.send({user_id: user._id.toString(), auth_token, is_profile_created: user.profile_created});
     } catch(err){
         res.send({error: err.message});
     }
@@ -59,6 +61,23 @@ app.post('/signup', async(req, res)=>{
         await new User(user).save();
         res.send({message: 'User created'});
     } catch(err){
+        res.send({error: err.message});
+    }
+});
+
+app.post('/update-profile', verifyJwt, async(req, res)=>{
+    try{
+        const user = await User.findById(req.user.user_id);
+
+        if(user.profile_created == true){
+            await Profile.findOneAndUpdate({user_id: req.user.user_id}, {...req.body});
+        } else{
+            await new Profile({...req.body, user_id: req.user.user_id}).save();
+            await User.findByIdAndUpdate(req.user.user_id, {profile_created: true});
+        }
+
+        res.send({message: 'Profile updated'});
+    }catch(err){
         res.send({error: err.message});
     }
 });
