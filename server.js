@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 app.use(cors());
+require('dotenv').config()
 
 const openAiService = new OpenAIService();
 const bodyParser = require('body-parser');
@@ -17,6 +18,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./models/User');
 const Profile = require('./models/Profile');
+
+const {mealPlannerPromptGenerator} = require('./utils/promptsGenerator');
 
 const jwtSecret = 'secret';
 
@@ -93,11 +96,15 @@ app.get('/profile', verifyJwt, async(req, res)=>{
 
 app.post('/meal-planner', verifyJwt, async(req, res)=>{
     try{
-        const { userDetail } = req.body;
-        const mealPlannerPrompt = mealPlannerPromptGenerator(userDetail);
-        let mealPlan = await openAiService.getResponse(mealPlannerPrompt);
+        // const userDetail = req.body;
+        // const mealPlannerPrompt = mealPlannerPromptGenerator(userDetail);
+        // let mealPlan = await openAiService.getResponse(mealPlannerPrompt);
+        const me = "{\n    \"breakfast\": {\n        \"recipe_name\": \"Egg and Vegetable Scramble\",\n        \"ingredients\": [\n            \"2 eggs\",\n            \"1 bell pepper, diced\",\n            \"1/2 onion, diced\",\n            \"1 cup spinach\",\n            \"1/4 cup shredded cheese\",\n            \"Salt and pepper to taste\",\n            \"1 tsp olive oil\"\n        ],\n        \"macro_goals\": {\n            \"calories\": 350,\n            \"carbs\": 15,\n            \"protein\": 20,\n            \"fats\": 23\n        }\n    },\n    \"lunch\": {\n        \"recipe_name\": \"Grilled Chicken Salad\",\n        \"ingredients\": [\n            \"4 oz grilled chicken breast, sliced\",\n            \"2 cups mixed salad greens\",\n            \"1/2 cucumber, sliced\",\n            \"1/4 cup cherry tomatoes, halved\",\n            \"1/4 cup sliced almonds\",\n            \"2 tbsp balsamic vinaigrette dressing\"\n        ],\n        \"macro_goals\": {\n            \"calories\": 400,\n            \"carbs\": 20,\n            \"protein\": 35,\n            \"fats\": 20\n        }\n    },\n    \"dinner\": {\n        \"recipe_name\": \"Salmon with Roasted Vegetables\",\n        \"ingredients\": [\n            \"4 oz salmon fillet\",\n            \"1 cup broccoli florets\",\n            \"1 cup cauliflower florets\",\n            \"1/2 red bell pepper, sliced\",\n            \"1/2 yellow bell pepper, sliced\",\n            \"2 tbsp olive oil\",\n            \"1 tsp dried herbs (e.g., basil, oregano, thyme)\",\n            \"Salt and pepper to taste\"\n        ],\n        \"macro_goals\": {\n            \"calories\": 450,\n            \"carbs\": 25,\n            \"protein\": 30,\n            \"fats\": 30\n        }\n    }\n}";
+        const result = JSON.parse(me);
 
-        res.send(mealPlan);
+        // const result = JSON.parse(mealPlan.content);
+
+        res.send(result);
     }catch(err){
         res.send({error: err.message});
     }

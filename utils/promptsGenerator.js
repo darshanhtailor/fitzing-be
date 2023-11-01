@@ -45,7 +45,12 @@ const mealPlannerPromptGenerator = (userDetail) => {
                 },
                 }
             }
+        }
 
-            Do not return anything except the json response:
+        Do not return anything except the json response:
         `
+}
+
+module.exports = {
+    mealPlannerPromptGenerator
 }
