@@ -14,7 +14,7 @@ const profileSchema = new mongoose.Schema({
         required: true
     },
     age: {
-        type: Number,
+        type: String,
         required: true
     },
     food_preference: {
