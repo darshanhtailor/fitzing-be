@@ -1,8 +1,10 @@
+const OpenAIService = require('./ai/openAiService')
 const express = require('express');
 const cors = require('cors');
 const app = express();
 app.use(cors());
 
+const openAiService = new OpenAIService();
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
@@ -84,6 +86,18 @@ app.get('/profile', verifyJwt, async(req, res)=>{
         let profile = await Profile.findOne({user_id: req.user.user_id}).select('-user_id');
 
         res.send(profile);
+    }catch(err){
+        res.send({error: err.message});
+    }
+})
+
+app.post('/meal-planner', verifyJwt, async(req, res)=>{
+    try{
+        const { userDetail } = req.body;
+        const mealPlannerPrompt = mealPlannerPromptGenerator(userDetail);
+        let mealPlan = await openAiService.getResponse(mealPlannerPrompt);
+
+        res.send(mealPlan);
     }catch(err){
         res.send({error: err.message});
     }
