@@ -1,5 +1,7 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
+app.use(cors());
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -17,12 +19,7 @@ const Profile = require('./models/Profile');
 const jwtSecret = 'secret';
 
 app.get('/', (req, res)=>{
-    res.send('hello world');
-});
-
-app.get('/check', verifyJwt, (req, res)=>{
-    console.log(req.user);
-    res.send('auth route');
+    res.send('fitzing backend');
 });
 
 app.post('/login', async(req, res)=>{
@@ -81,6 +78,16 @@ app.post('/update-profile', verifyJwt, async(req, res)=>{
         res.send({error: err.message});
     }
 });
+
+app.get('/profile', verifyJwt, async(req, res)=>{
+    try{
+        let profile = await Profile.findOne({user_id: req.user.user_id}).select('-user_id');
+
+        res.send(profile);
+    }catch(err){
+        res.send({error: err.message});
+    }
+})
 
 app.listen(3000, (req, res)=>{
     console.log('Server started on http://localhost:3000/');
