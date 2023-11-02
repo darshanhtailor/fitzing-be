@@ -107,6 +107,33 @@ app.get("/profile", verifyJwt, async (req, res) => {
     }
 });
 
+app.post('/update-meal-status', verifyJwt, async(req, res)=>{
+    try{
+        const user_id = req.user.user_id;
+        const meal_time = req.body.meal_time;
+
+        const meal_data = await Meals.findOne({user_id});
+        const today = new Date().toISOString().substring(0, 10);
+        
+        for (let data of meal_data.data) {
+            if (data["date"] == today) {
+                data['completed'][meal_time] = true;
+                
+                data['macros_consumed']['calories'] += data['meals'][meal_time]['macro_goals']['calories'];
+                data['macros_consumed']['carbs'] += data['meals'][meal_time]['macro_goals']['carbs'];
+                data['macros_consumed']['protein'] += data['meals'][meal_time]['macro_goals']['protein'];
+                data['macros_consumed']['fats'] += data['meals'][meal_time]['macro_goals']['fats'];
+
+                await meal_data.save();
+
+                return res.send({ message: `${meal_time} macros updated` })
+            }
+        }
+    } catch(err){
+        res.status(400).send({ error: err.message });
+    }
+});
+
 app.get("/meal-planner", verifyJwt, async (req, res) => {
     try {
         const user_id = req.user.user_id;
