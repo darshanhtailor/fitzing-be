@@ -26,6 +26,20 @@ const mealsSchema = new mongoose.Schema({
             breakfast: mealSchema,
             lunch: mealSchema,
             dinner: mealSchema
+        },
+        completed:{
+            breakfast:{
+                type: Boolean,
+                default: false
+            },
+            lunch:{
+                type: Boolean,
+                default: false
+            },
+            dinner:{
+                type: Boolean,
+                default: false
+            }
         }
     }]
 });
