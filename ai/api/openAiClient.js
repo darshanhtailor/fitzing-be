@@ -5,14 +5,6 @@ require('dotenv').config()
 class OpenAIClient {
 
     constructor() {
-        // const configuration = new Configuration({
-        //     apiKey: process.env.OPENAI_API_KEY,
-        // });
-        // this.openai = new OpenAIApi(configuration);
-        // this.openai = new OpenAIApi({
-        //     apiKey: process.env.OPENAI_API_KEY
-        // });
-        // this.openai = new OpenAIApi.OpenAI({ key: process.env.OPENAI_API_KEY });
         this.openai = new OpenAI({ key:process.env.OPENAI_API_KEY });
     }
 
@@ -28,7 +20,6 @@ class OpenAIClient {
                 presence_penalty: 0,
             });
 
-            console.log(chatCompletion);
             return chatCompletion.choices[0].message;
         } catch (error) {
             console.error('Error getting ChatGPT response:', error);

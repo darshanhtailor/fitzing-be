@@ -17,15 +17,17 @@ const mealsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    date:{
-        type: Date,
-        required: true
-    },
-    meals:{
-        breakfast: mealSchema,
-        lunch: mealSchema,
-        dinner: mealSchema
-    }
+    data:[{
+        date:{
+            type: String,
+            require: true
+        },
+        meals:{
+            breakfast: mealSchema,
+            lunch: mealSchema,
+            dinner: mealSchema
+        }
+    }]
 });
 
 const Meals = mongoose.model('Meals', mealsSchema);
