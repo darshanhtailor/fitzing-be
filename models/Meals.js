@@ -22,6 +22,24 @@ const mealsSchema = new mongoose.Schema({
             type: String,
             require: true
         },
+        macros_consumed:{
+            calories: {
+                type: Number,
+                default: 0
+            },
+            carbs: {
+                type: Number,
+                default: 0
+            },
+            protein: {
+                type: Number,
+                default: 0
+            },
+            fats: {
+                type: Number,
+                default: 0
+            },
+        },
         meals:{
             breakfast: mealSchema,
             lunch: mealSchema,
