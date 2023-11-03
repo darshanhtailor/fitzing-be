@@ -1,0 +1,317 @@
+[
+    {
+        "date": "2023-11-04",
+        "macros_consumed": {
+            "calories": 325,
+            "carbs": 40,
+            "protein": 18,
+            "fats": 12
+        },
+        "completed": {
+            "breakfast": true,
+            "lunch": true,
+            "dinner": true
+        },
+        "meals": {
+            "breakfast": {
+                "macro_goals": {
+                    "calories": 350,
+                    "carbs": 30,
+                    "protein": 10,
+                    "fats": 15
+                },
+                "recipe_name": "Avocado Toast",
+                "ingredients": [
+                    "1 slice of whole grain bread",
+                    "1/2 ripe avocado",
+                    "1 tsp lemon juice",
+                    "1 tsp olive oil",
+                    "Salt and pepper to taste"
+                ],
+                "_id": "6543fa031299c900818d18a0"
+            },
+            "lunch": {
+                "macro_goals": {
+                    "calories": 450,
+                    "carbs": 40,
+                    "protein": 30,
+                    "fats": 20
+                },
+                "recipe_name": "Grilled Chicken and Quinoa Salad",
+                "ingredients": [
+                    "4 oz grilled chicken breast",
+                    "1/2 cup cooked quinoa",
+                    "1 cup mixed salad greens",
+                    "1/4 cup cherry tomatoes",
+                    "1/4 cup cucumber",
+                    "1 tbsp olive oil",
+                    "1 tbsp balsamic vinegar",
+                    "Salt and pepper to taste"
+                ],
+                "_id": "6543fa031299c900818d18a1"
+            },
+            "dinner": {
+                "macro_goals": {
+                    "calories": 500,
+                    "carbs": 30,
+                    "protein": 40,
+                    "fats": 25
+                },
+                "recipe_name": "Salmon with Roasted Vegetables",
+                "ingredients": [
+                    "4 oz salmon fillet",
+                    "1 cup mixed vegetables (broccoli, cauliflower, carrots)",
+                    "1 tbsp olive oil",
+                    "1 tsp dried herbs (rosemary, thyme, oregano)",
+                    "Salt and pepper to taste"
+                ],
+                "_id": "6543fa031299c900818d18a2"
+            }
+        }
+    },
+    {
+        "date": "2023-11-05",
+        "macros_consumed": {
+            "calories": 290,
+            "carbs": 35,
+            "protein": 15,
+            "fats": 10
+        },
+        "completed": {
+            "breakfast": true,
+            "lunch": true,
+            "dinner": true
+        },
+        "meals": {
+            "breakfast": {
+                "macro_goals": {
+                    "calories": 320,
+                    "carbs": 30,
+                    "protein": 12,
+                    "fats": 14
+                },
+                "recipe_name": "Custom Breakfast",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18a3"
+            },
+            "lunch": {
+                "macro_goals": {
+                    "calories": 420,
+                    "carbs": 40,
+                    "protein": 25,
+                    "fats": 18
+                },
+                "recipe_name": "Custom Lunch",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18a4"
+            },
+            "dinner": {
+                "macro_goals": {
+                    "calories": 450,
+                    "carbs": 35,
+                    "protein": 30,
+                    "fats": 20
+                },
+                "recipe_name": "Custom Dinner",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18a5"
+            }
+        }
+    },
+    {
+        "date": "2023-11-06",
+        "macros_consumed": {
+            "calories": 310,
+            "carbs": 38,
+            "protein": 20,
+            "fats": 15
+        },
+        "completed": {
+            "breakfast": true,
+            "lunch": true,
+            "dinner": true
+        },
+        "meals": {
+            "breakfast": {
+                "macro_goals": {
+                    "calories": 340,
+                    "carbs": 32,
+                    "protein": 14,
+                    "fats": 16
+                },
+                "recipe_name": "Custom Breakfast",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18a6"
+            },
+            "lunch": {
+                "macro_goals": {
+                    "calories": 450,
+                    "carbs": 42,
+                    "protein": 28,
+                    "fats": 22
+                },
+                "recipe_name": "Custom Lunch",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18a7"
+            },
+            "dinner": {
+                "macro_goals": {
+                    "calories": 480,
+                    "carbs": 40,
+                    "protein": 35,
+                    "fats": 24
+                },
+                "recipe_name": "Custom Dinner",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18a8"
+            }
+        }
+    },
+    {
+        "date": "2023-11-07",
+        "macros_consumed": {
+            "calories": 320,
+            "carbs": 45,
+            "protein": 22,
+            "fats": 14
+        },
+        "completed": {
+            "breakfast": true,
+            "lunch": true,
+            "dinner": true
+        },
+        "meals": {
+            "breakfast": {
+                "macro_goals": {
+                    "calories": 360,
+                    "carbs": 35,
+                    "protein": 16,
+                    "fats": 15
+                },
+                "recipe_name": "Custom Breakfast",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18a9"
+            },
+            "lunch": {
+                "macro_goals": {
+                    "calories": 460,
+                    "carbs": 40,
+                    "protein": 30,
+                    "fats": 20
+                },
+                "recipe_name": "Custom Lunch",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18aa"
+            },
+            "dinner": {
+                "macro_goals": {
+                    "calories": 500,
+                    "carbs": 45,
+                    "protein": 35,
+                    "fats": 25
+                },
+                "recipe_name": "Custom Dinner",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18ab"
+            }
+        }
+    },
+    {
+        "date": "2023-11-08",
+        "macros_consumed": {
+            "calories": 310,
+            "carbs": 40,
+            "protein": 20,
+            "fats": 15
+        },
+        "completed": {
+            "breakfast": true,
+            "lunch": true,
+            "dinner": true
+        },
+        "meals": {
+            "breakfast": {
+                "macro_goals": {
+                    "calories": 350,
+                    "carbs": 35,
+                    "protein": 18,
+                    "fats": 16
+                },
+                "recipe_name": "Custom Breakfast",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18ac"
+            },
+            "lunch": {
+                "macro_goals": {
+                    "calories": 450,
+                    "carbs": 40,
+                    "protein": 30,
+                    "fats": 20
+                },
+                "recipe_name": "Custom Lunch",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18ad"
+            },
+            "dinner": {
+                "macro_goals": {
+                    "calories": 480,
+                    "carbs": 45,
+                    "protein": 35,
+                    "fats": 22
+                },
+                "recipe_name": "Custom Dinner",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18ae"
+            }
+        }
+    },
+    {
+        "date": "2023-11-09",
+        "macros_consumed": {
+            "calories": 330,
+            "carbs": 42,
+            "protein": 22,
+            "fats": 16
+        },
+        "completed": {
+            "breakfast": true,
+            "lunch": true,
+            "dinner": true
+        },
+        "meals": {
+            "breakfast": {
+                "macro_goals": {
+                    "calories": 360,
+                    "carbs": 38,
+                    "protein": 20,
+                    "fats": 18
+                },
+                "recipe_name": "Custom Breakfast",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18af"
+            },
+            "lunch": {
+                "macro_goals": {
+                    "calories": 460,
+                    "carbs": 42,
+                    "protein": 30,
+                    "fats": 22
+                },
+                "recipe_name": "Custom Lunch",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18b0"
+            },
+            "dinner": {
+                "macro_goals": {
+                    "calories": 490,
+                    "carbs": 45,
+                    "protein": 35,
+                    "fats": 24
+                },
+                "recipe_name": "Custom Dinner",
+                "ingredients": [],
+                "_id": "6543fa031299c900818d18b1"
+            }
+        }
+    }
+]

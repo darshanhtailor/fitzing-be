@@ -230,6 +230,12 @@ app.post("/customize-meal", verifyJwt, async (req, res) => {
     }
 });
 
+const chartdata = require('./chartdata.json');
+app.get('/chart-data', async(req, res)=>{
+    // console.log(chartdata);
+    res.send(chartdata);
+})
+
 app.listen(5000, (req, res) => {
     console.log("Server started on http://localhost:5000/");
 });
