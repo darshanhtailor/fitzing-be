@@ -1,4 +1,9 @@
 const mealPlannerPromptGenerator = (userDetail) => {
+    const userDetailPrompt = `${userDetail.name} is a ${userDetail.gender}. ${userDetail.name} is ${userDetail.age} years old. ${userDetail.name}'s food preferences are ${food_preference}.
+        Medical conditions of ${userDetail.name} includes ${userDetail.medical_conditions}. ${userDetail.name}'s current goal is ${userDetail.current_goal}.
+        Please recommend meal based on the user preferences, carefully consider vegeterian and non-vegeterian food preferences.
+        Do not repeat your meal recommendation.
+     `
     return `
         Design a balanced meal plan that includes a distinct recipe for breakfast, lunch, and dinner. 
         Ensure that each recipe aligns with the user's macro goals, including calories, carbohydrates, protein, and fats. 
@@ -7,7 +12,7 @@ const mealPlannerPromptGenerator = (userDetail) => {
 
         This is the user details:
 
-        ${userDetail}
+        ${userDetailPrompt}
 
         Only return a json response in the following schema:
 
@@ -52,6 +57,12 @@ const mealPlannerPromptGenerator = (userDetail) => {
 }
 
 const customizeMealPromptGenerator = (userDetail, prevMeal) => {
+    const userDetailPrompt = `${userDetail.name} is a ${userDetail.gender}. ${userDetail.name} is ${userDetail.age} years old. ${userDetail.name}'s food preferences are ${food_preference}.
+        Medical conditions of ${userDetail.name} includes ${userDetail.medical_conditions}. ${userDetail.name}'s current goal is ${userDetail.current_goal}.
+        Please recommend meal based on the user preferences, carefully consider vegeterian and non-vegeterian food preferences.
+        Do not repeat your meal recommendation.
+     `
+
     return `
     Design a balanced meal plan that includes a distinct recipe for the given meal. 
     Please provide the recipe name and a list of ingredients for each meal. 
@@ -59,7 +70,7 @@ const customizeMealPromptGenerator = (userDetail, prevMeal) => {
 
     This is the user details:
 
-    ${userDetail}
+    ${userDetailPrompt}
 
     This is previous meal:
 
