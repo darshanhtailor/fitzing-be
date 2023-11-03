@@ -190,6 +190,7 @@ app.post("/customize-meal", verifyJwt, async (req, res) => {
         // }
         const user_id = req.user.user_id;
         const meal_time = req.body.meal_time;
+        const user_input = req.body.user_input;
 
         const meal_data = await Meals.findOne({user_id});
         const today = new Date().toISOString().substring(0, 10);
@@ -205,6 +206,7 @@ app.post("/customize-meal", verifyJwt, async (req, res) => {
                 const userDetail = {
                     gender,
                     age,
+                    ingredients: user_input,
                     food_preference,
                     medical_conditions,
                     current_goal,
