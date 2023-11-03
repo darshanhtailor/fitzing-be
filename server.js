@@ -152,10 +152,11 @@ app.get("/meal-planner", verifyJwt, async (req, res) => {
             }
         }
 
-        const { gender, age, food_preference, medical_conditions, current_goal } =
+        const { name, gender, age, food_preference, medical_conditions, current_goal } =
             await Profile.findOne({ user_id: req.user.user_id });
 
         const userDetail = {
+            name,
             gender,
             age,
             food_preference,
@@ -200,10 +201,11 @@ app.post("/customize-meal", verifyJwt, async (req, res) => {
             if (data["date"] == today) {
                 prev_meal = data['meals'][meal_time];
 
-                const { gender, age, food_preference, medical_conditions, current_goal } =
+                const { name, gender, age, food_preference, medical_conditions, current_goal } =
                 await Profile.findOne({ user_id });
 
                 const userDetail = {
+                    name,
                     gender,
                     age,
                     ingredients: user_input,
