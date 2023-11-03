@@ -189,26 +189,38 @@ app.post("/customize-meal", verifyJwt, async (req, res) => {
         //     }
         // }
         const user_id = req.user.user_id;
-        const prev_meal = req.body;
+        const meal_time = req.body.meal_time;
+
+        const meal_data = await Meals.findOne({user_id});
         const today = new Date().toISOString().substring(0, 10);
+        
+        let prev_meal = 0;
+        for (let data of meal_data.data) {
+            if (data["date"] == today) {
+                prev_meal = data['meals'][meal_time];
 
-        const { gender, age, food_preference, medical_conditions, current_goal } =
-            await Profile.findOne({ user_id });
+                const { gender, age, food_preference, medical_conditions, current_goal } =
+                await Profile.findOne({ user_id });
 
-        const userDetail = {
-            gender,
-            age,
-            food_preference,
-            medical_conditions,
-            current_goal,
-            cuisine: "Indian",
-        };
+                const userDetail = {
+                    gender,
+                    age,
+                    food_preference,
+                    medical_conditions,
+                    current_goal,
+                    cuisine: "Indian",
+                };
 
-        const mealPlannerPrompt = customizeMealPromptGenerator(userDetail, prev_meal);
-        let mealPlan = await openAiService.getResponse(mealPlannerPrompt);
-        const result = JSON.parse(mealPlan.content);
+                const mealPlannerPrompt = customizeMealPromptGenerator(userDetail, prev_meal);
+                let mealPlan = await openAiService.getResponse(mealPlannerPrompt);
+                const result = JSON.parse(mealPlan.content);
 
-        res.send(result);
+                data['meals'][meal_time] = result;
+                await meal_data.save();
+                
+                return res.send(result);
+            }
+        }
     } catch (err) {
         res.status(400).send({ error: err.message });
     }

@@ -54,7 +54,6 @@ const mealPlannerPromptGenerator = (userDetail) => {
 const customizeMealPromptGenerator = (userDetail, prevMeal) => {
     return `
     Design a balanced meal plan that includes a distinct recipe for the given meal. 
-    Ensure that recipe aligns with the user's macro goals, including calories, carbohydrates, protein, and fats. 
     Please provide the recipe name and a list of ingredients for each meal. 
     Consider the user's dietary preferences and the previous meal and aim to create a new meal that are nutritionally balanced and suitable for their health goals and the count of calorie, carbohydrates, protein, and fats should be similar to previous meal.
 
