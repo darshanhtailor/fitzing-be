@@ -1,5 +1,5 @@
 const mealPlannerPromptGenerator = (userDetail) => {
-    const userDetailPrompt = `${userDetail.name} is a ${userDetail.gender}. ${userDetail.name} is ${userDetail.age} years old. ${userDetail.name}'s food preferences are ${userDetail.food_preference}.
+    const userDetailPrompt = `${userDetail.name} is a ${userDetail.gender}. Their height is ${userDetail.height} and weight is ${userDetail.weight}. ${userDetail.name} is ${userDetail.age} years old. ${userDetail.name}'s food preferences are ${userDetail.food_preference}.
         Medical conditions of ${userDetail.name} includes ${userDetail.medical_conditions}. ${userDetail.name}'s current goal is ${userDetail.current_goal}.
         Please recommend meal based on the user preferences, carefully consider vegeterian and non-vegeterian food preferences.
         Do not repeat your meal recommendation.
@@ -57,7 +57,7 @@ const mealPlannerPromptGenerator = (userDetail) => {
 }
 
 const customizeMealPromptGenerator = (userDetail, prevMeal) => {
-    const userDetailPrompt = `${userDetail.name} is a ${userDetail.gender}. ${userDetail.name} is ${userDetail.age} years old. ${userDetail.name}'s food preferences are ${userDetail.food_preference}.
+    const userDetailPrompt = `${userDetail.name} is a ${userDetail.gender}. Their height is ${userDetail.height} and weight is ${userDetail.weight}. ${userDetail.name} is ${userDetail.age} years old. ${userDetail.name}'s food preferences are ${userDetail.food_preference}.
         Medical conditions of ${userDetail.name} includes ${userDetail.medical_conditions}. ${userDetail.name}'s current goal is ${userDetail.current_goal}.
         Suggest a recipe which has the following ingredients ${userDetail.ingredients}.
         Please recommend meal based on the user preferences, carefully consider vegeterian and non-vegeterian food preferences.
