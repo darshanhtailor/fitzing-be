@@ -216,8 +216,11 @@ app.post("/customize-meal", verifyJwt, async (req, res) => {
                 };
 
                 const mealPlannerPrompt = customizeMealPromptGenerator(userDetail, prev_meal);
+                console.log('calling custom meal prompt');
                 let mealPlan = await openAiService.getResponse(mealPlannerPrompt);
                 const result = JSON.parse(mealPlan.content);
+                console.log('custom meal generated');
+                console.log(result);
 
                 data['meals'][meal_time] = result;
                 await meal_data.save();
