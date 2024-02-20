@@ -18,7 +18,7 @@ async function getFoodImage(url) {
     }
   } catch (error) {
     console.error('Error fetching image source:', error);
-    throw error;
+    return null;
   }
 }
 

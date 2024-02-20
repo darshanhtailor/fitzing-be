@@ -7,7 +7,7 @@ const getMealsRecommendation = async (userDetail) => {
   const preferencedFood = foodData.filter((foodItem) => {
     return (
       foodItem.cuisine === userDetail.Cuisine &&
-      foodItem.Diet.toLowerCase().includes(userDetail.food_preference) &&
+      // foodItem.Diet.toLowerCase().includes(userDetail.food_preference) &&
       (userDetail.ingredients && foodItem.Ingredients
         ? foodItem.Ingredients.toLowerCase().includes(
             userDetail.ingredients
@@ -43,7 +43,7 @@ const getMealsRecommendation = async (userDetail) => {
         protein: 30,
         fats: 10,
       },
-      img_url: `${foodWebDomain}${breakfastImage}`
+      img_url: breakfastImage && `${foodWebDomain}${breakfastImage}`
     },
 
     lunch: {
@@ -56,7 +56,7 @@ const getMealsRecommendation = async (userDetail) => {
         protein: 40,
         fats: 20,
       },
-      img_url: `${foodWebDomain}${lunchImage}`
+      img_url: lunchImage && `${foodWebDomain}${lunchImage}`
     },
 
     dinner: {
@@ -69,7 +69,7 @@ const getMealsRecommendation = async (userDetail) => {
         protein: 30,
         fats: 10,
       },
-      img_url: `${foodWebDomain}${dinnerImage}`
+      img_url: dinnerImage && `${foodWebDomain}${dinnerImage}`
     },
   };
 };

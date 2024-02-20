@@ -45,7 +45,7 @@ class OpenAIService {
 
   async getResponse(prompt, userDetail, context = []) {
     try {
-      const mealRecommendations = getMealRecommendation(userDetail);
+      const mealRecommendations = await getMealRecommendation(userDetail);
       if (!mealRecommendations) {
         return defaultMeal;
       }
