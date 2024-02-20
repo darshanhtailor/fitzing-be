@@ -36,6 +36,7 @@ const getMealsRecommendation = async (userDetail) => {
     breakfast: {
       recipe_name: breakfast.TranslatedRecipeName,
       ingredients: breakfast.TranslatedIngredients,
+      recipe_instructions: breakfast.TranslatedInstructions,
       macro_goals: {
         calories: 500,
         carbs: 40,
@@ -48,6 +49,7 @@ const getMealsRecommendation = async (userDetail) => {
     lunch: {
       recipe_name: lunch.TranslatedRecipeName,
       ingredients: lunch.TranslatedIngredients,
+      recipe_instructions: lunch.TranslatedInstructions,
       macro_goals: {
         calories: 1000,
         carbs: 60,
@@ -60,6 +62,7 @@ const getMealsRecommendation = async (userDetail) => {
     dinner: {
       recipe_name: dinner.TranslatedRecipeName,
       ingredients: dinner.TranslatedIngredients,
+      recipe_instructions: dinner.TranslatedInstructions,
       macro_goals: {
         calories: 600,
         carbs: 40,

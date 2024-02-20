@@ -188,7 +188,7 @@ app.get("/meal-planner", verifyJwt, async (req, res) => {
     const mealPlannerPrompt = mealPlannerPromptGenerator(userDetail);
     let result = await openAiService.getResponse(mealPlannerPrompt, userDetail);
     // const result = JSON.parse(mealPlan.content);
-
+    console.log(result);
     meal_data.data.push({
       date: today,
       meals: result,

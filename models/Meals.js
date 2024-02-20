@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const mealSchema = new mongoose.Schema({
     recipe_name: String,
     ingredients: [String],
+    recipe_instructions: String,
+    img_url: String,
     macro_goals: {
       calories: Number,
       carbs: Number,
