@@ -161,16 +161,14 @@ app.get("/meal-planner", verifyJwt, async (req, res) => {
             height,
             weight,
             age,
-            food_preference,
+            food_preference, 
             medical_conditions,
-            current_goal,
+            current_goal,  
             cuisine: "Indian",
         };
         const mealPlannerPrompt = mealPlannerPromptGenerator(userDetail);
-        console.log('calling new meal prompt');
-        let mealPlan = await openAiService.getResponse(mealPlannerPrompt);
-        const result = JSON.parse(mealPlan.content);
-        console.log(result);
+        let result = await openAiService.getResponse(mealPlannerPrompt, userDetail);
+        // const result = JSON.parse(mealPlan.content);
 
         meal_data.data.push({
             date: today,
