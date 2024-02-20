@@ -1,12 +1,18 @@
 const foodData = require("../constants/food.json");
 
 const getMealsRecommendation = (userDetail) => {
-  const preferencedFood = foodData.filter(
-    (foodItem) =>
+  const preferencedFood = foodData.filter((foodItem) => {
+    return (
       foodItem.cuisine === userDetail.Cuisine &&
-      foodItem.Diet === userDetail.food_preference &&
-      foodItem.Diet.toLowerCase().includes(userDetail.food_preference)
-  );
+      foodItem.Diet.toLowerCase().includes(userDetail.food_preference) &&
+      (userDetail.ingredients && foodItem.Ingredients
+        ? foodItem.Ingredients.toLowerCase().includes(
+            userDetail.ingredients
+          )
+        : true)
+    );
+  });
+
   const preferencedFoodLen = preferencedFood.length;
 
   if (!preferencedFoodLen) {
@@ -27,7 +33,7 @@ const getMealsRecommendation = (userDetail) => {
       ingredients: breakfast.TranslatedIngredients,
       macro_goals: {
         calories: 500,
-        carb: 40,
+        carbs: 40,
         protein: 30,
         fats: 10,
       },
@@ -38,7 +44,7 @@ const getMealsRecommendation = (userDetail) => {
       ingredients: lunch.TranslatedIngredients,
       macro_goals: {
         calories: 1000,
-        carb: 60,
+        carbs: 60,
         protein: 40,
         fats: 20,
       },
@@ -49,7 +55,7 @@ const getMealsRecommendation = (userDetail) => {
       ingredients: dinner.TranslatedIngredients,
       macro_goals: {
         calories: 600,
-        carb: 40,
+        carbs: 40,
         protein: 30,
         fats: 10,
       },

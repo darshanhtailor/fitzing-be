@@ -20,276 +20,338 @@ const User = require("./models/User");
 const Profile = require("./models/Profile");
 const Meals = require("./models/Meals");
 
-const { mealPlannerPromptGenerator, customizeMealPromptGenerator } = require("./utils/promptsGenerator");
+const {
+  mealPlannerPromptGenerator,
+  customizeMealPromptGenerator,
+} = require("./utils/promptsGenerator");
 
 const jwtSecret = "secret";
 
 app.get("/", (req, res) => {
-    res.send("fitzing backend");
+  res.send("fitzing backend");
 });
 
 app.post("/login", async (req, res) => {
-    try {
-        const user = await User.findOne({ email: req.body.email });
-        if (!user) {
-            throw new Error("User not found");
-        }
-
-        const valid = await bcrypt.compare(req.body.password, user.password);
-        if (!valid) {
-            throw new Error("Incorrect password");
-        }
-
-        const auth_token = jwt.sign(
-            { user_id: user._id.toString(), email: user.email },
-            jwtSecret
-        );
-        res.send({
-            user_id: user._id.toString(),
-            auth_token,
-            is_profile_created: user.profile_created,
-        });
-    } catch (err) {
-        res.status(400).send({ error: err.message });
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      throw new Error("User not found");
     }
+
+    const valid = await bcrypt.compare(req.body.password, user.password);
+    if (!valid) {
+      throw new Error("Incorrect password");
+    }
+
+    const auth_token = jwt.sign(
+      { user_id: user._id.toString(), email: user.email },
+      jwtSecret
+    );
+    res.send({
+      user_id: user._id.toString(),
+      auth_token,
+      is_profile_created: user.profile_created,
+    });
+  } catch (err) {
+    res.status(400).send({ error: err.message });
+  }
 });
 
 app.post("/signup", async (req, res) => {
-    try {
-        const user = req.body;
+  try {
+    const user = req.body;
 
-        if (user.password != user.confirm_password) {
-            throw new Error("Passwords do not match");
-        }
-
-        const salt = await bcrypt.genSalt(10);
-        const hashedPass = await bcrypt.hash(user.password, salt);
-
-        user.password = hashedPass;
-        delete user.confirm_password;
-
-        await new User(user).save();
-        res.send({ message: "User created" });
-    } catch (err) {
-        res.status(400).send({ error: err.message });
+    if (user.password != user.confirm_password) {
+      throw new Error("Passwords do not match");
     }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(user.password, salt);
+
+    user.password = hashedPass;
+    delete user.confirm_password;
+
+    await new User(user).save();
+    res.send({ message: "User created" });
+  } catch (err) {
+    res.status(400).send({ error: err.message });
+  }
 });
 
 app.post("/update-profile", verifyJwt, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.user_id);
+  try {
+    const user = await User.findById(req.user.user_id);
 
-        if (user.profile_created == true) {
-            await Profile.findOneAndUpdate(
-                { user_id: req.user.user_id },
-                { ...req.body }
-            );
-        } else {
-            await new Profile({ ...req.body, user_id: req.user.user_id }).save();
-            await User.findByIdAndUpdate(req.user.user_id, { profile_created: true });
-        }
-
-        res.send({ message: "Profile updated" });
-    } catch (err) {
-        res.status(400).send({ error: err.message });
+    if (user.profile_created == true) {
+      await Profile.findOneAndUpdate(
+        { user_id: req.user.user_id },
+        { ...req.body }
+      );
+    } else {
+      await new Profile({ ...req.body, user_id: req.user.user_id }).save();
+      await User.findByIdAndUpdate(req.user.user_id, { profile_created: true });
     }
+
+    res.send({ message: "Profile updated" });
+  } catch (err) {
+    res.status(400).send({ error: err.message });
+  }
 });
 
 app.get("/profile", verifyJwt, async (req, res) => {
-    try {
-        const profile = await Profile.findOne({ user_id: req.user.user_id }).select(
-            "-user_id"
-        );
+  try {
+    const profile = await Profile.findOne({ user_id: req.user.user_id }).select(
+      "-user_id"
+    );
 
-        res.send(profile);
-    } catch (err) {
-        res.status(400).send({ error: err.message });
-    }
+    res.send(profile);
+  } catch (err) {
+    res.status(400).send({ error: err.message });
+  }
 });
 
-app.post('/update-meal-status', verifyJwt, async (req, res) => {
-    try {
-        const user_id = req.user.user_id;
-        const meal_time = req.body.meal_time;
+app.post("/update-meal-status", verifyJwt, async (req, res) => {
+  try {
+    const user_id = req.user.user_id;
+    const meal_time = req.body.meal_time;
 
-        const meal_data = await Meals.findOne({ user_id });
-        const today = new Date().toISOString().substring(0, 10);
+    const meal_data = await Meals.findOne({ user_id });
+    const today = new Date().toISOString().substring(0, 10);
 
-        for (let data of meal_data.data) {
-            if (data["date"] == today) {
-                data['completed'][meal_time] = true;
+    for (let data of meal_data.data) {
+      if (data["date"] == today) {
+        data["completed"][meal_time] = true;
 
-                data['macros_consumed']['calories'] += data['meals'][meal_time]['macro_goals']['calories'];
-                data['macros_consumed']['carbs'] += data['meals'][meal_time]['macro_goals']['carbs'];
-                data['macros_consumed']['protein'] += data['meals'][meal_time]['macro_goals']['protein'];
-                data['macros_consumed']['fats'] += data['meals'][meal_time]['macro_goals']['fats'];
+        data["macros_consumed"]["calories"] +=
+          data["meals"][meal_time]["macro_goals"]["calories"];
+        data["macros_consumed"]["carbs"] +=
+          data["meals"][meal_time]["macro_goals"]["carbs"];
+        data["macros_consumed"]["protein"] +=
+          data["meals"][meal_time]["macro_goals"]["protein"];
+        data["macros_consumed"]["fats"] +=
+          data["meals"][meal_time]["macro_goals"]["fats"];
 
-                await meal_data.save();
+        await meal_data.save();
 
-                return res.send({ message: `${meal_time} macros updated` })
-            }
-        }
-    } catch (err) {
-        res.status(400).send({ error: err.message });
+        return res.send({ message: `${meal_time} macros updated` });
+      }
     }
+  } catch (err) {
+    res.status(400).send({ error: err.message });
+  }
 });
 
 app.get("/meal-planner", verifyJwt, async (req, res) => {
-    try {
-        const user_id = req.user.user_id;
-        const meal_data = await Meals.findOneAndUpdate(
-            { user_id },
-            { user_id },
-            { upsert: true, new: true }
-        );
-        const today = new Date().toISOString().substring(0, 10);
+  try {
+    const user_id = req.user.user_id;
+    const meal_data = await Meals.findOneAndUpdate(
+      { user_id },
+      { user_id },
+      { upsert: true, new: true }
+    );
+    const today = new Date().toISOString().substring(0, 10);
 
-        if (meal_data.data != []) {
-            for (let data of meal_data.data) {
-                if (data["date"] == today) {
-                    return res.send({ macros_consumed: data['macros_consumed'], completed: data['completed'], meals: data["meals"] });
-                }
-            }
+    if (meal_data.data != []) {
+      for (let data of meal_data.data) {
+        if (data["date"] == today) {
+          return res.send({
+            macros_consumed: data["macros_consumed"],
+            completed: data["completed"],
+            meals: data["meals"],
+          });
         }
-
-        const { name, gender, height, weight, age, food_preference, medical_conditions, current_goal } =
-            await Profile.findOne({ user_id: req.user.user_id });
-
-        const userDetail = {
-            name,
-            gender,
-            height,
-            weight,
-            age,
-            food_preference, 
-            medical_conditions,
-            current_goal,  
-            cuisine: "Indian",
-        };
-        const mealPlannerPrompt = mealPlannerPromptGenerator(userDetail);
-        let result = await openAiService.getResponse(mealPlannerPrompt, userDetail);
-        // const result = JSON.parse(mealPlan.content);
-
-        meal_data.data.push({
-            date: today,
-            meals: result,
-        });
-        await meal_data.save();
-
-        const len = meal_data.data.length;
-        res.send({ macros_consumed: meal_data.data[len - 1]['macros_consumed'], completed: meal_data.data[len - 1]['completed'], meals: result });
-    } catch (err) {
-        res.status(400).send({ error: err.message });
+      }
     }
+
+    const {
+      name,
+      gender,
+      height,
+      weight,
+      age,
+      food_preference,
+      medical_conditions,
+      current_goal,
+    } = await Profile.findOne({ user_id: req.user.user_id });
+
+    const userDetail = {
+      name,
+      gender,
+      height,
+      weight,
+      age,
+      food_preference,
+      medical_conditions,
+      current_goal,
+      cuisine: "Indian",
+    };
+    const mealPlannerPrompt = mealPlannerPromptGenerator(userDetail);
+    let result = await openAiService.getResponse(mealPlannerPrompt, userDetail);
+    // const result = JSON.parse(mealPlan.content);
+
+    meal_data.data.push({
+      date: today,
+      meals: result,
+    });
+    await meal_data.save();
+
+    const len = meal_data.data.length;
+    res.send({
+      macros_consumed: meal_data.data[len - 1]["macros_consumed"],
+      completed: meal_data.data[len - 1]["completed"],
+      meals: result,
+    });
+  } catch (err) {
+    res.status(400).send({ error: err.message });
+  }
 });
 
 app.post("/customize-meal", verifyJwt, async (req, res) => {
-    try {
-        // prev_meal = {
-        //     meal_time,
-        //     info:{
+  try {
+    // prev_meal = {
+    //     meal_time,
+    //     info:{
 
-        //     }
-        // }
-        const user_id = req.user.user_id;
-        const meal_time = req.body.meal_time;
-        const user_input = req.body.user_input;
+    //     }
+    // }
+    const user_id = req.user.user_id;
+    const meal_time = req.body.meal_time;
+    const user_input = req.body.user_input;
 
-        const meal_data = await Meals.findOne({ user_id });
-        const today = new Date().toISOString().substring(0, 10);
+    const meal_data = await Meals.findOne({ user_id });
+    const today = new Date().toISOString().substring(0, 10);
 
-        let prev_meal = 0;
-        for (let data of meal_data.data) {
-            if (data["date"] == today) {
-                prev_meal = data['meals'][meal_time];
+    let prev_meal = 0;
+    for (let data of meal_data.data) {
+      if (data["date"] == today) {
+        prev_meal = data["meals"][meal_time];
 
-                const { name, gender, height, weight, age, food_preference, medical_conditions, current_goal } =
-                    await Profile.findOne({ user_id });
+        const {
+          name,
+          gender,
+          height,
+          weight,
+          age,
+          food_preference,
+          medical_conditions,
+          current_goal,
+        } = await Profile.findOne({ user_id });
 
-                const userDetail = {
-                    name,
-                    gender,
-                    height,
-                    weight,
-                    age,
-                    ingredients: user_input,
-                    food_preference,
-                    medical_conditions,
-                    current_goal,
-                    cuisine: "Indian",
-                };
+        const userDetail = {
+          name,
+          gender,
+          height,
+          weight,
+          age,
+          ingredients: user_input,
+          food_preference,
+          medical_conditions,
+          current_goal,
+          cuisine: "Indian",
+        };
 
-                const mealPlannerPrompt = customizeMealPromptGenerator(userDetail, prev_meal);
-                console.log('calling custom meal prompt');
-                let mealPlan = await openAiService.getResponse(mealPlannerPrompt);
-                const result = JSON.parse(mealPlan.content);
-                console.log('custom meal generated');
-                console.log(result);
+        const mealPlannerPrompt = customizeMealPromptGenerator(
+          userDetail,
+          prev_meal
+        );
+        console.log("calling custom meal prompt");
+        let result = await openAiService.getResponse(
+          mealPlannerPrompt,
+          userDetail
+        );
 
-                data['meals'][meal_time] = result;
-                await meal_data.save();
+        console.log(result)
+        // const result = JSON.parse(mealPlan.content);
 
-                return res.send(result);
-            }
-        }
-    } catch (err) {
-        res.status(400).send({ error: err.message });
+        data["meals"][meal_time] = result[meal_time];
+        await meal_data.save();
+
+        return res.send(result);
+      }
     }
+  } catch (err) {
+    res.status(400).send({ error: err.message });
+  }
 });
 
 app.get("/weekly-report", verifyJwt, async (req, res) => {
-    try {
-        const user_id = req.user.user_id;
-        const meal_data = await Meals.findOne({ user_id });
+  try {
+    const user_id = req.user.user_id;
+    const meal_data = await Meals.findOne({ user_id });
 
-        let c = 0, i = meal_data.data.length-1;
-        let dates = [], calorie_hits = [], protein_hits = [], carbs_hits = [], fats_hits = [], calorie_targets = [], protein_targets = [], carbs_targets = [], fats_targets = [];
+    let c = 0,
+      i = meal_data.data.length - 1;
+    let dates = [],
+      calorie_hits = [],
+      protein_hits = [],
+      carbs_hits = [],
+      fats_hits = [],
+      calorie_targets = [],
+      protein_targets = [],
+      carbs_targets = [],
+      fats_targets = [];
 
-        while (i >= 0 && c != 7) {
-            const curr = meal_data.data[i];
-            // console.log(curr);
-            
-            dates.push(curr.date);
+    while (i >= 0 && c != 7) {
+      const curr = meal_data.data[i];
+      // console.log(curr);
 
-            calorie_hits.push(curr.macros_consumed.calories);
-            protein_hits.push(curr.macros_consumed.protein);
-            carbs_hits.push(curr.macros_consumed.carbs);
-            fats_hits.push(curr.macros_consumed.fats);
+      dates.push(curr.date);
 
-            calorie_targets.push(curr.meals.breakfast.macro_goals.calories + curr.meals.lunch.macro_goals.calories + curr.meals.dinner.macro_goals.calories);
+      calorie_hits.push(curr.macros_consumed.calories);
+      protein_hits.push(curr.macros_consumed.protein);
+      carbs_hits.push(curr.macros_consumed.carbs);
+      fats_hits.push(curr.macros_consumed.fats);
 
-            protein_targets.push(curr.meals.breakfast.macro_goals.protein + curr.meals.lunch.macro_goals.protein + curr.meals.dinner.macro_goals.protein);
+      calorie_targets.push(
+        curr.meals.breakfast.macro_goals.calories +
+          curr.meals.lunch.macro_goals.calories +
+          curr.meals.dinner.macro_goals.calories
+      );
 
-            carbs_targets.push(curr.meals.breakfast.macro_goals.carbs + curr.meals.lunch.macro_goals.carbs + curr.meals.dinner.macro_goals.carbs);
+      protein_targets.push(
+        curr.meals.breakfast.macro_goals.protein +
+          curr.meals.lunch.macro_goals.protein +
+          curr.meals.dinner.macro_goals.protein
+      );
 
-            fats_targets.push(curr.meals.breakfast.macro_goals.fats + curr.meals.lunch.macro_goals.fats + curr.meals.dinner.macro_goals.fats);
+      carbs_targets.push(
+        curr.meals.breakfast.macro_goals.carbs +
+          curr.meals.lunch.macro_goals.carbs +
+          curr.meals.dinner.macro_goals.carbs
+      );
 
-            i--;
-            c++;
-        }
+      fats_targets.push(
+        curr.meals.breakfast.macro_goals.fats +
+          curr.meals.lunch.macro_goals.fats +
+          curr.meals.dinner.macro_goals.fats
+      );
 
-        return res.send({
-            dates,
-            calorie_hits,
-            protein_hits,
-            carbs_hits,
-            fats_hits,
-            calorie_targets,
-            protein_targets,
-            carbs_targets,
-            fats_targets
-        });
-    } catch (err) {
-        res.status(400).send({ error: err.message });
+      i--;
+      c++;
     }
+
+    return res.send({
+      dates,
+      calorie_hits,
+      protein_hits,
+      carbs_hits,
+      fats_hits,
+      calorie_targets,
+      protein_targets,
+      carbs_targets,
+      fats_targets,
+    });
+  } catch (err) {
+    res.status(400).send({ error: err.message });
+  }
 });
 
-const chartdata = require('./chartdata.json');
-app.get('/chart-data', async (req, res) => {
-    // console.log(chartdata);
-    res.send(chartdata);
-})
+const chartdata = require("./chartdata.json");
+app.get("/chart-data", async (req, res) => {
+  // console.log(chartdata);
+  res.send(chartdata);
+});
 
 app.listen(5000, (req, res) => {
-    console.log("Server started on http://localhost:5000/");
+  console.log("Server started on http://localhost:5000/");
 });
