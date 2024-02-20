@@ -64,3 +64,17 @@ const mealsSchema = new mongoose.Schema({
 
 const Meals = mongoose.model('Meals', mealsSchema);
 module.exports = Meals;
+
+
+// [
+//     "date":{
+//         "calories":{
+//             hit:
+//             target
+//         },
+//         "protein":{
+//             hit:
+//             target
+//         }
+//     }
+// ]
