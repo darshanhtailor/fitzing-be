@@ -1,6 +1,9 @@
 const foodData = require("../constants/food.json");
+const getFoodImage = require("../utils/getFoodImage")
 
-const getMealsRecommendation = (userDetail) => {
+const foodWebDomain = `https://www.archanaskitchen.com`
+
+const getMealsRecommendation = async (userDetail) => {
   const preferencedFood = foodData.filter((foodItem) => {
     return (
       foodItem.cuisine === userDetail.Cuisine &&
@@ -25,7 +28,9 @@ const getMealsRecommendation = (userDetail) => {
   const dinner =
     preferencedFood[Math.floor(Math.random() * preferencedFoodLen)];
 
-  console.log(breakfast);
+  const breakfastImage = await getFoodImage(breakfast.URL)
+  const lunchImage = await getFoodImage(lunch.URL)
+  const dinnerImage = await getFoodImage(dinner.URL)
 
   return {
     breakfast: {
@@ -37,6 +42,7 @@ const getMealsRecommendation = (userDetail) => {
         protein: 30,
         fats: 10,
       },
+      img_url: `${foodWebDomain}${breakfastImage}`
     },
 
     lunch: {
@@ -48,6 +54,7 @@ const getMealsRecommendation = (userDetail) => {
         protein: 40,
         fats: 20,
       },
+      img_url: `${foodWebDomain}${lunchImage}`
     },
 
     dinner: {
@@ -59,6 +66,7 @@ const getMealsRecommendation = (userDetail) => {
         protein: 30,
         fats: 10,
       },
+      img_url: `${foodWebDomain}${dinnerImage}`
     },
   };
 };
