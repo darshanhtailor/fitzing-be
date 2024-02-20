@@ -245,35 +245,42 @@ app.get("/weekly-report", verifyJwt, async (req, res) => {
         const meal_data = await Meals.findOne({ user_id });
 
         let c = 0, i = meal_data.data.length-1;
-        const ret = [];
+        let dates = [], calorie_hits = [], protein_hits = [], carbs_hits = [], fats_hits = [], calorie_targets = [], protein_targets = [], carbs_targets = [], fats_targets = [];
+
         while (i >= 0 && c != 7) {
             const curr = meal_data.data[i];
             // console.log(curr);
-            ret.push({
-                date: curr.date,
-                calories: {
-                    hit: curr.macros_consumed.calories,
-                    target: curr.meals.breakfast.macro_goals.calories + curr.meals.lunch.macro_goals.calories + curr.meals.dinner.macro_goals.calories
-                },
-                carbs: {
-                    hit: curr.macros_consumed.carbs,
-                    target: curr.meals.breakfast.macro_goals.carbs + curr.meals.lunch.macro_goals.carbs + curr.meals.dinner.macro_goals.carbs
-                },
-                protein: {
-                    hit: curr.macros_consumed.protein,
-                    target: curr.meals.breakfast.macro_goals.protein + curr.meals.lunch.macro_goals.protein + curr.meals.dinner.macro_goals.protein
-                },
-                fats: {
-                    hit: curr.macros_consumed.fats,
-                    target: curr.meals.breakfast.macro_goals.fats + curr.meals.lunch.macro_goals.fats + curr.meals.dinner.macro_goals.fats
-                },
-            });
+            
+            dates.push(curr.date);
+
+            calorie_hits.push(curr.macros_consumed.calories);
+            protein_hits.push(curr.macros_consumed.protein);
+            carbs_hits.push(curr.macros_consumed.carbs);
+            fats_hits.push(curr.macros_consumed.fats);
+
+            calorie_targets.push(curr.meals.breakfast.macro_goals.calories + curr.meals.lunch.macro_goals.calories + curr.meals.dinner.macro_goals.calories);
+
+            protein_targets.push(curr.meals.breakfast.macro_goals.protein + curr.meals.lunch.macro_goals.protein + curr.meals.dinner.macro_goals.protein);
+
+            carbs_targets.push(curr.meals.breakfast.macro_goals.carbs + curr.meals.lunch.macro_goals.carbs + curr.meals.dinner.macro_goals.carbs);
+
+            fats_targets.push(curr.meals.breakfast.macro_goals.fats + curr.meals.lunch.macro_goals.fats + curr.meals.dinner.macro_goals.fats);
 
             i--;
             c++;
         }
 
-        return res.send(ret);
+        return res.send({
+            dates,
+            calorie_hits,
+            protein_hits,
+            carbs_hits,
+            fats_hits,
+            calorie_targets,
+            protein_targets,
+            carbs_targets,
+            fats_targets
+        });
     } catch (err) {
         res.status(400).send({ error: err.message });
     }
